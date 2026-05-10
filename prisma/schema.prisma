@@ -22,4 +22,5 @@ model User {
   gender    String @db.VarChar(10) 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  skills    String[] @db.VarChar(100) // Array of skills, stored as a PostgreSQL array
 }
