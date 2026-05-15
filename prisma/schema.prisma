@@ -12,15 +12,49 @@ datasource db {
   provider = "postgresql"
 }
 
+// Whenever i call this model i want userDetails + connectionRequest if there is any 
+// For that i need to connect the user model with the connection model using relations
+// one to many 
 model User {
-  id         Int    @id @default(autoincrement())
-  firstName String @db.VarChar(30)
-  lastName  String @db.VarChar(50)
-  email      String @unique
-  password   String
+  id        Int      @id @default(autoincrement())
+  firstName String   @db.VarChar(30)
+  lastName  String   @db.VarChar(50)
+  email     String   @unique
+  password  String
   age       Int
-  gender    String @db.VarChar(10) 
+  gender    String   @db.VarChar(10)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   skills    String[] @db.VarChar(100) // Array of skills, stored as a PostgreSQL array
+  alreadyConnected Boolean @default(false)
+  sentRequests connectionRequestSchema[] @relation("loggedInUser")
+  receivedRequests connectionRequestSchema[] @relation("randomPerson")
+}
+
+enum RequestStatus {
+  ignore
+  interested
+  accepted
+  rejected
+}
+
+// i need to make one foreign key in connectionRequestSchema to connect with user model
+// Which will be senderId and receiverId both will be foreign keys to user model
+model connectionRequestSchema {
+  id               Int           @id @default(autoincrement())
+  loggedInUserId   Int // Foreign key to User model
+  randomPersonId   Int // Foreign key to User model
+  status           RequestStatus
+  createdAt        DateTime      @default(now())
+  @@index([loggedInUserId, randomPersonId]) // Index for faster lookups
+
+  // Define relations to User model
+  loggedInUser User @relation("loggedInUser", fields: [loggedInUserId], references: [id])
+  randomPerson User @relation("randomPerson", fields: [randomPersonId], references: [id])
+
+}
+
+model feedSchema{
+  id Int @id @default(autoincrement())
+  
 }

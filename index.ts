@@ -2,6 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import authRoutes from './src/routes/auth.routes.ts';
 import userRoutes from './src/routes/user.routes.ts';
+import connectionRoutes from './src/routes/connectionRequest.route.ts';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +13,7 @@ app.use(cookieParser()); // Middleware to parse cookies from the request headers
 // Mount the Routes
 app.use("/", authRoutes);
 app.use("/", userRoutes);
+app.use("/", connectionRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

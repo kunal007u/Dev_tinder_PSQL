@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 const route = express.Router();
 
 // POST /api/v1/users - Create a new user
-route.post("/api/v1/users", authMiddleware, async (req, res, next) => {
+route.post("/api/v1/users", async (req, res, next) => {
     const { firstName, lastName, email, age, gender, password, skills } = req.body;
 
     let isUserExist = await prisma.user.findUnique({

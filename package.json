@@ -15,9 +15,11 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "db:migrate": "npx prisma migrate dev && npx prisma generate",
+    "db:reset": "npx prisma migrate reset --force && npx prisma generate",
+    "build": "npx prisma generate && tsc"
   },
   "dependencies": {
     "@prisma/client": "^7.8.0",
@@ -26,7 +28,8 @@
     "cookie-parser": "^1.4.7",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "prisma": "^7.8.0"
+    "prisma": "^7.8.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@prisma/adapter-pg": "^7.8.0",
